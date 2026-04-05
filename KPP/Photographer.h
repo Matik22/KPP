@@ -21,4 +21,11 @@ public:
     void printInfo() override;
     void authenticate() override;
     std::string getRole() override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Photographer& p);
+    friend std::istream& operator>>(std::istream& is, Photographer& p);
+
+    bool operator==(const Photographer& other) const;
+    bool operator<(const Photographer& other) const;
+	bool operator>(const Photographer& other) const;
 };
