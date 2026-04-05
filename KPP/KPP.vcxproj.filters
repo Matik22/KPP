@@ -19,17 +19,17 @@
     <Filter Include="Исходные файлы\Models">
       <UniqueIdentifier>{510a75af-495b-4398-91b7-33472c5d1f52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Models\Client">
-      <UniqueIdentifier>{04413e4b-2e8b-48ae-8a4e-9c4cf5863c43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Models\Employee">
-      <UniqueIdentifier>{f1f39d75-eefb-4128-ac55-13aa54801f1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\Models\Service">
-      <UniqueIdentifier>{415269c5-56aa-44b1-b0dc-142e46eedcf8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\Models\User">
       <UniqueIdentifier>{48bdf789-a7ee-4357-96d7-502c7880fe7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Photographer">
+      <UniqueIdentifier>{f1f39d75-eefb-4128-ac55-13aa54801f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Administrator">
+      <UniqueIdentifier>{415269c5-56aa-44b1-b0dc-142e46eedcf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Photo">
+      <UniqueIdentifier>{04413e4b-2e8b-48ae-8a4e-9c4cf5863c43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,14 +42,14 @@
     <ClCompile Include="CMenuItem.cpp">
       <Filter>Исходные файлы\menu</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>Исходные файлы\Models\Client</Filter>
+    <ClCompile Include="Photo.cpp">
+      <Filter>Исходные файлы\Models\Photo</Filter>
     </ClCompile>
-    <ClCompile Include="Employee.cpp">
-      <Filter>Исходные файлы\Models\Employee</Filter>
+    <ClCompile Include="Photographer.cpp">
+      <Filter>Исходные файлы\Models\Photographer</Filter>
     </ClCompile>
-    <ClCompile Include="Service.cpp">
-      <Filter>Исходные файлы\Models\Service</Filter>
+    <ClCompile Include="Administrator.cpp">
+      <Filter>Исходные файлы\Models\Administrator</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>Исходные файлы\Models\User</Filter>
@@ -62,14 +62,14 @@
     <ClInclude Include="CMenuItem.h">
       <Filter>Исходные файлы\menu</Filter>
     </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>Исходные файлы\Models\Client</Filter>
+    <ClInclude Include="Photo.h">
+      <Filter>Исходные файлы\Models\Photo</Filter>
     </ClInclude>
-    <ClInclude Include="Employee.h">
-      <Filter>Исходные файлы\Models\Employee</Filter>
+    <ClInclude Include="Photographer.h">
+      <Filter>Исходные файлы\Models\Photographer</Filter>
     </ClInclude>
-    <ClInclude Include="Service.h">
-      <Filter>Исходные файлы\Models\Service</Filter>
+    <ClInclude Include="Administrator.h">
+      <Filter>Исходные файлы\Models\Administrator</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
       <Filter>Исходные файлы\Models\User</Filter>

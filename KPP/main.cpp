@@ -2,91 +2,62 @@
 #include <string>
 #include "CMenu.h"
 #include "CMenuItem.h"
-#include "Employee.h"
-#include "Client.h"
-#include "Service.h"
+#include "Photographer.h"
+#include "Administrator.h"
+#include "Photo.h"
 
 using namespace std;
 using namespace XXX;
 
-Employee employee{ "Матвей", "Иванов", 30, "matvey", "1234", "Механик" };
-Client client{ "Никита", "Петров", 25, "nikita", "5678", "Ремонт велосипеда" };
-Service service{ "Ремонт велосипеда", 1500.0, "Полный ремонт велосипеда с заменой деталей" };
+Photographer photographer{ "Иван", "Петров", 32, "ivan", "pass123", "Портрет", 4.8 };
+Administrator admin{ "Анна", "Смирнова", 28, "anna", "admin456", 3, "IT-отдел" };
+Photo photo{ "Закат на море", "2024-06-15", "Иван Петров"};
 
-int showEmployee() {
-    employee.printInfo();
+int showPhotographer() {
+    photographer.printInfo();
     return 1;
 }
-
-int authEmployee() {
-    employee.authenticate();
+int authPhotographer() {
+    photographer.authenticate();
     return 2;
 }
-
-int roleEmployee() {
-    std::cout << "Роль: " << employee.getRole() << std::endl;
+int rolePhotographer() {
+    std::cout << "Роль: " << photographer.getRole() << std::endl;
     return 3;
 }
 
-int showClient() {
-    client.printInfo();
+int showAdmin() {
+    admin.printInfo();
     return 4;
 }
-
-int authClient() {
-    client.authenticate();
+int authAdmin() {
+    admin.authenticate();
     return 5;
 }
-
-int roleClient() {
-    std::cout << "Роль: " << client.getRole() << std::endl;
+int roleAdmin() {
+    std::cout << "Роль: " << admin.getRole() << std::endl;
     return 6;
 }
 
-int showService() {
-    service.printInfo();
+int showPhoto() {
+    photo.printInfo();
     return 7;
 }
 
-int f5() {
-    std::cout << "." << std::endl;
-    std::cout << "┊┊┊┊┊┊╱▔▔╲▔▔╲" << std::endl;
-    std::cout << "┊╱▔▔▔▔▏┊┊┊┈╭╮" << std::endl;
-    std::cout << "╭▏  ┈┈┈┈▏┊┊┊┈┈┈╲" << std::endl;
-    std::cout << "┋   ┈┈┈┈╲▂▂╱┈╰┈┊▏" << std::endl;
-    std::cout << "╯┃ ┈┈┈┈┈┈┈┈ ╭▔▔▏▏" << std::endl;
-    std::cout << "┊┃┈┈┈┣┫┈┈┈┃  ┊┊▏▏" << std::endl;
-    std::cout << "┈┃╭┳┳┫┃╭┳┳┫┈  ╱╱" << std::endl;
-    std::cout << "┈╰┻┻┻╯╰┻┻┻╯┈▔" << std::endl;
-    return 8;
-}
-
-int f6() {
-    string name{};
-    std::cout << "Введите имя" << std::endl;
-    std::cin >> name;
-    std::cout << "Добро пожаловать, " << name << endl;
-    return 9;
-}
-
-const int ITEMS_NUMBER = 9;
+const int ITEMS_NUMBER = 7;
 
 int main() {
-
     CMenuItem items[ITEMS_NUMBER]{
-        CMenuItem{"Информация о сотруднике", showEmployee},
-        CMenuItem{"Аутентификация сотрудника", authEmployee},
-        CMenuItem{"Роль сотрудника", roleEmployee},
-        CMenuItem{"Информация о клиенте", showClient},
-        CMenuItem{"Аутентификация клиента", authClient},
-        CMenuItem{"Роль клиента", roleClient},
-        CMenuItem{"Информация об услуге", showService},
-        CMenuItem{"Слоник", f5},
-        CMenuItem{"Приветствие", f6}
+        CMenuItem{"Информация о фотографе",       showPhotographer},
+        CMenuItem{"Аутентификация фотографа",     authPhotographer},
+        CMenuItem{"Роль фотографа",               rolePhotographer},
+        CMenuItem{"Информация об администраторе", showAdmin},
+        CMenuItem{"Аутентификация администратора",authAdmin},
+        CMenuItem{"Роль администратора",          roleAdmin},
+        CMenuItem{"Информация о фотографии",      showPhoto},
     };
 
-    CMenu menu("Система управления", items, ITEMS_NUMBER);
+    CMenu menu("Система управления фотографиями", items, ITEMS_NUMBER);
     while (menu.runCommand()) {};
-
     return 0;
 }

@@ -127,20 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Photo.cpp" />
     <ClCompile Include="CMenuItem.cpp" />
-    <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="Photographer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CMenu.cpp" />
-    <ClCompile Include="Service.cpp" />
+    <ClCompile Include="Administrator.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h" />
+    <ClInclude Include="Photo.h" />
     <ClInclude Include="CMenu.h" />
     <ClInclude Include="CMenuItem.h" />
-    <ClInclude Include="Employee.h" />
-    <ClInclude Include="Service.h" />
+    <ClInclude Include="Photographer.h" />
+    <ClInclude Include="Administrator.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
