@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\menu">
+      <UniqueIdentifier>{e2de4273-2131-4e64-8137-d85ab5df142d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models">
+      <UniqueIdentifier>{510a75af-495b-4398-91b7-33472c5d1f52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\User">
+      <UniqueIdentifier>{48bdf789-a7ee-4357-96d7-502c7880fe7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Photographer">
+      <UniqueIdentifier>{f1f39d75-eefb-4128-ac55-13aa54801f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Administrator">
+      <UniqueIdentifier>{415269c5-56aa-44b1-b0dc-142e46eedcf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Models\Photo">
+      <UniqueIdentifier>{04413e4b-2e8b-48ae-8a4e-9c4cf5863c43}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenu.cpp">
+      <Filter>Исходные файлы\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenuItem.cpp">
+      <Filter>Исходные файлы\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Photo.cpp">
+      <Filter>Исходные файлы\Models\Photo</Filter>
+    </ClCompile>
+    <ClCompile Include="Photographer.cpp">
+      <Filter>Исходные файлы\Models\Photographer</Filter>
+    </ClCompile>
+    <ClCompile Include="Administrator.cpp">
+      <Filter>Исходные файлы\Models\Administrator</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>Исходные файлы\Models\User</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CMenu.h">
+      <Filter>Исходные файлы\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="CMenuItem.h">
+      <Filter>Исходные файлы\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Photo.h">
+      <Filter>Исходные файлы\Models\Photo</Filter>
+    </ClInclude>
+    <ClInclude Include="Photographer.h">
+      <Filter>Исходные файлы\Models\Photographer</Filter>
+    </ClInclude>
+    <ClInclude Include="Administrator.h">
+      <Filter>Исходные файлы\Models\Administrator</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Исходные файлы\Models\User</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
