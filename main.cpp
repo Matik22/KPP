@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
-#include "CMenu.h"
-#include "CMenuItem.h"
-#include "Photographer.h"
-#include "Administrator.h"
-#include "Photo.h"
+#include "Menu/CMenu.h"
+#include "Menu/CMenuItem.h"
+#include "Photographer/Photographer.h"
+#include "Administrator/Administrator.h"
+#include "Photo/Photo.h"
 #include <vector>
 
 using namespace std;
