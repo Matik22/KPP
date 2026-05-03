@@ -15,6 +15,7 @@ using namespace XXX;
 MyArray<Photographer> photographers;
 MyArray<Administrator> admins;
 MyArray<Photo> photos;
+MyArray<CMenuItem> items;
 
 // Прототипы функций
 int showPhotographer();
@@ -29,19 +30,6 @@ int deletePhotographer();
 int sortPhotographers();
 
 // Элементы меню
-const int ITEMS_NUMBER = 10;
-CMenuItem items[ITEMS_NUMBER]{
-    CMenuItem{"Показать фотографов", showPhotographer},
-    CMenuItem{"Роль фотографа", rolePhotographer},
-    CMenuItem{"Показать администраторов", showAdmin},
-    CMenuItem{"Роль администратора", roleAdmin},
-    CMenuItem{"Показать фотографии", showPhoto},
-    CMenuItem{"Ввод фотографа", inputPhotographer},
-    CMenuItem{"Сравнение фотографов", comparePhotographers},
-    CMenuItem{"Добавить фотографа", addPhotographer},
-    CMenuItem{"Удалить фотографа", deletePhotographer},
-    CMenuItem{"Сортировать фотографов", sortPhotographers},
-};
 
 // Инициализация данных
 void initializeData() {
@@ -58,6 +46,18 @@ void initializeData() {
     photos.add(Photo("Закат на море", "2024-06-15", "Иван Петров"));
     photos.add(Photo("Горный пейзаж", "2024-07-20", "Олег Сидоров"));
     photos.add(Photo("Портрет", "2024-08-01", "Мария Козлова"));
+
+    // Инициализируем элементы меню
+    items.add(CMenuItem{"Показать фотографов", showPhotographer});
+    items.add(CMenuItem{"Роль фотографа", rolePhotographer});
+    items.add(CMenuItem{"Показать администраторов", showAdmin});
+    items.add(CMenuItem{"Роль администратора", roleAdmin});
+    items.add(CMenuItem{"Показать фотографии", showPhoto});
+    items.add(CMenuItem{"Ввод фотографа", inputPhotographer});
+    items.add(CMenuItem{"Сравнение фотографов", comparePhotographers});
+    items.add(CMenuItem{"Добавить фотографа", addPhotographer});
+    items.add(CMenuItem{"Удалить фотографа", deletePhotographer});
+    items.add(CMenuItem{"Сортировать фотографов", sortPhotographers});
 }
 
 int showPhotographer() {
@@ -152,7 +152,7 @@ int main() {
     if (!auth.login()) {
         return 0;
     }
-    CMenu menu("Система управления фотографиями", items, ITEMS_NUMBER);
+    CMenu menu("Система управления фотографиями", items.begin(), items.getSize());
     while (menu.runCommand()) {};
     return 0;
 }
