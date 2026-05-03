@@ -7,7 +7,12 @@ bool Auth::login() {
     while (true) {
         std::string login;
         std::cout << "=== Авторизация ===" << std::endl;
+        std::cout << "Введите логин: ";
         std::cin >> login;
+
+        if (login == "0") {
+            return false;
+        }
 
         User* found = nullptr;
         for (auto it : users) {
