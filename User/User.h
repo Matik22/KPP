@@ -24,6 +24,5 @@ public:
     std::string getPassword() const { return password; }
 
     virtual void printInfo() = 0;
-    virtual void authenticate() = 0;
     virtual std::string getRole() = 0;
 };

@@ -6,10 +6,6 @@ void Administrator::printInfo() {
         << ", Уровень доступа: " << accessLevel << std::endl;
 }
 
-void Administrator::authenticate() {
-    User::authenticate();
-}
-
 std::string Administrator::getRole() {
     return "Administrator";
 }

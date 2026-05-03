@@ -20,6 +20,5 @@ public:
     void setDepartment(std::string dep) { department = dep; }
 
     void printInfo() override;
-    void authenticate() override;
     std::string getRole() override;
 };

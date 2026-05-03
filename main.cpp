@@ -5,29 +5,30 @@
 #include "Photographer/Photographer.h"
 #include "Administrator/Administrator.h"
 #include "Photo/Photo.h"
+#include "Auth/Auth.h"
 #include <vector>
 
 using namespace std;
 using namespace XXX;
 
 std::vector<Photographer> photographers = {
-    {"Иван",  "Петров",  32, "ivan",  "pass123", "Портрет", 4.8},
-    {"Олег",  "Сидоров", 25, "oleg",  "qwerty",  "Пейзаж",  3.5},
-    {"Мария", "Козлова", 29, "maria", "abc123",  "Репортаж", 4.2},
+    {"Иван", "Петров", 32, "ivan", "pass123", "Портрет", 4.8},
+    {"Олег", "Сидоров", 25, "oleg", "qwerty", "Пейзаж", 3.5},
+    {"Мария", "Козлова", 29, "maria", "abc123", "Репортаж", 4.2},
 };
 int photographersCount = 3;
 
 const int ADMINS_COUNT = 2;
 Administrator admins[ADMINS_COUNT] = {
-    {"Анна",  "Смирнова", 28, "anna",  "admin456", 3, "IT-отдел"},
-    {"Пётр",  "Волков",   35, "petr",  "admin789", 2, "Архив"},
+    {"Анна", "Смирнова", 28, "anna", "admin456", 3, "IT-отдел"},
+    {"Пётр", "Волков", 35, "petr", "admin789", 2, "Архив"},
 };
 
 const int PHOTOS_COUNT = 3;
 Photo photos[PHOTOS_COUNT] = {
-    {"Закат на море",  "2024-06-15", "Иван Петров"},
+    {"Закат на море", "2024-06-15", "Иван Петров"},
     {"Горный пейзаж", "2024-07-20", "Олег Сидоров"},
-    {"Портрет",       "2024-08-01", "Мария Козлова"},
+    {"Портрет", "2024-08-01", "Мария Козлова"},
 };
 
 int showPhotographer() {
@@ -38,43 +39,33 @@ int showPhotographer() {
     return 1;
 }
 
-int authPhotographer() {
-    photographers[0].authenticate();
-    return 2;
-}
-
 int rolePhotographer() {
     std::cout << "Роль: " << photographers[0].getRole() << std::endl;
-    return 3;
+    return 2;
 }
 
 int showAdmin() {
     for (int i = 0; i < ADMINS_COUNT; i++) {
         admins[i].printInfo();
     }
-    return 4;
-}
-
-int authAdmin() {
-    admins[0].authenticate();
-    return 5;
+    return 3;
 }
 
 int roleAdmin() {
     std::cout << "Роль: " << admins[0].getRole() << std::endl;
-    return 6;
+    return 4;
 }
 
 int showPhoto() {
     for (int i = 0; i < PHOTOS_COUNT; i++) {
         photos[i].printInfo();
     }
-    return 7;
+    return 5;
 }
 
 int inputPhotographer() {
     std::cin >> photographers[0];
-    return 8;
+    return 6;
 }
 
 int comparePhotographers() {
@@ -84,7 +75,7 @@ int comparePhotographers() {
         std::cout << photographers[0].getFirstName() << " лучше" << std::endl;
     else
         std::cout << photographers[1].getFirstName() << " лучше" << std::endl;
-    return 9;
+    return 7;
 }
 
 int addPhotographer() {
@@ -92,7 +83,7 @@ int addPhotographer() {
     std::cin >> p;
     photographers.push_back(p);
     photographersCount++;
-    return 10;
+    return 8;
 }
 
 int deletePhotographer() {
@@ -102,12 +93,12 @@ int deletePhotographer() {
     idx--;
     if (idx < 0 || idx >= photographersCount) {
         std::cout << "Неверный номер!" << std::endl;
-        return 11;
+        return 9;
     }
     photographers.erase(photographers.begin() + idx);
     photographersCount--;
     std::cout << "Удалено!" << std::endl;
-    return 11;
+    return 9;
 }
 
 int sortPhotographers() {
@@ -121,62 +112,35 @@ int sortPhotographers() {
         }
     }
     std::cout << "Отсортировано по рейтингу!" << std::endl;
-    return 12;
+    return 10;
 }
 
-bool authorize()
-{
-    std::string login, password;
-    std::cout << "=== Авторизация ===" << std::endl;
-    std::cout << "Логин: ";
-    std::cin >> login;
-    std::cout << "Пароль: ";
-    std::cin >> password;
-
-    for (int i = 0; i < photographersCount; i++)
-    {
-        if (photographers[i].getLogin() == login &&
-            photographers[i].getPassword() == password)
-        {
-            std::cout << "Добро пожаловать, " << photographers[i].getFirstName() << "!" << std::endl;
-            return true;
-        }
-    }
-    for (int i = 0; i < ADMINS_COUNT; i++)
-    {
-        if (admins[i].getLogin() == login &&
-            admins[i].getPassword() == password)
-        {
-            std::cout << "Добро пожаловать, " << admins[i].getFirstName() << "!" << std::endl;
-            return true;
-        }
-    }
-    std::cout << "Неверный логин или пароль!" << std::endl;
-    return false;
-}
-
-const int ITEMS_NUMBER = 12;
+const int ITEMS_NUMBER = 10;
 
 CMenuItem items[ITEMS_NUMBER]{
-    CMenuItem{"Показать фотографов",          showPhotographer},
-    CMenuItem{"Аутентификация фотографа",     authPhotographer},
-    CMenuItem{"Роль фотографа",               rolePhotographer},
-    CMenuItem{"Показать администраторов",     showAdmin},
-    CMenuItem{"Аутентификация администратора",authAdmin},
-    CMenuItem{"Роль администратора",          roleAdmin},
-    CMenuItem{"Показать фотографии",          showPhoto},
-    CMenuItem{"Ввод фотографа",               inputPhotographer},
-    CMenuItem{"Сравнение фотографов",         comparePhotographers},
-    CMenuItem{"Добавить фотографа",           addPhotographer},
-    CMenuItem{"Удалить фотографа",            deletePhotographer},
-    CMenuItem{"Сортировать фотографов",       sortPhotographers},
+    CMenuItem{"Показать фотографов", showPhotographer},
+    CMenuItem{"Роль фотографа", rolePhotographer},
+    CMenuItem{"Показать администраторов", showAdmin},
+    CMenuItem{"Роль администратора", roleAdmin},
+    CMenuItem{"Показать фотографии", showPhoto},
+    CMenuItem{"Ввод фотографа", inputPhotographer},
+    CMenuItem{"Сравнение фотографов", comparePhotographers},
+    CMenuItem{"Добавить фотографа", addPhotographer},
+    CMenuItem{"Удалить фотографа", deletePhotographer},
+    CMenuItem{"Сортировать фотографов", sortPhotographers},
 };
+
 int main() {
-    bool auth = false;
-    while (!auth)
-    {
-        auth = authorize();
+    std::vector<User*> allUsers;
+    for (int i = 0; i < photographersCount; i++) {
+        allUsers.push_back(&photographers[i]);
     }
+    for (int i = 0; i < ADMINS_COUNT; i++) {
+        allUsers.push_back(&admins[i]);
+    }
+
+    Auth auth(allUsers);
+    while (!auth.login()) {}
 
     CMenu menu("Система управления фотографиями", items, ITEMS_NUMBER);
     while (menu.runCommand()) {};

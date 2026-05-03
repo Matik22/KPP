@@ -6,10 +6,6 @@ void Photographer::printInfo() {
         << ", Рейтинг: " << rating << std::endl;
 }
 
-void Photographer::authenticate() {
-    User::authenticate();
-}
-
 std::string Photographer::getRole() {
     return "Photographer";
 }
