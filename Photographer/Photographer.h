@@ -1,5 +1,5 @@
 #pragma once
-#include "User.h"
+#include "User/User.h"
 
 class Photographer : public User {
 private:
@@ -19,7 +19,6 @@ public:
     void setRating(double r) { rating = r; }
 
     void printInfo() override;
-    void authenticate() override;
     std::string getRole() override;
 
     friend std::ostream& operator<<(std::ostream& os, const Photographer& p);

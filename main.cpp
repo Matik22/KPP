@@ -1,184 +1,158 @@
 #include <iostream>
 #include <string>
-#include "CMenu.h"
-#include "CMenuItem.h"
-#include "Photographer.h"
-#include "Administrator.h"
-#include "Photo.h"
-#include <vector>
+#include "Menu/CMenu.h"
+#include "Menu/CMenuItem.h"
+#include "Photographer/Photographer.h"
+#include "Administrator/Administrator.h"
+#include "Photo/Photo.h"
+#include "Auth/Auth.h"
+#include "MyArray/MyArray.h"
 
 using namespace std;
 using namespace XXX;
 
-std::vector<Photographer> photographers = {
-    {"Иван",  "Петров",  32, "ivan",  "pass123", "Портрет", 4.8},
-    {"Олег",  "Сидоров", 25, "oleg",  "qwerty",  "Пейзаж",  3.5},
-    {"Мария", "Козлова", 29, "maria", "abc123",  "Репортаж", 4.2},
-};
-int photographersCount = 3;
+// Контейнеры для наших сущностей
+MyArray<Photographer> photographers;
+MyArray<Administrator> admins;
+MyArray<Photo> photos;
+MyArray<CMenuItem> items;
 
-const int ADMINS_COUNT = 2;
-Administrator admins[ADMINS_COUNT] = {
-    {"Анна",  "Смирнова", 28, "anna",  "admin456", 3, "IT-отдел"},
-    {"Пётр",  "Волков",   35, "petr",  "admin789", 2, "Архив"},
-};
+// Прототипы функций
+int showPhotographer();
+int rolePhotographer();
+int showAdmin();
+int roleAdmin();
+int showPhoto();
+int inputPhotographer();
+int comparePhotographers();
+int addPhotographer();
+int deletePhotographer();
+int sortPhotographers();
 
-const int PHOTOS_COUNT = 3;
-Photo photos[PHOTOS_COUNT] = {
-    {"Закат на море",  "2024-06-15", "Иван Петров"},
-    {"Горный пейзаж", "2024-07-20", "Олег Сидоров"},
-    {"Портрет",       "2024-08-01", "Мария Козлова"},
-};
+// Элементы меню
+
+// Инициализация данных
+void initializeData() {
+    // Добавляем фотографов
+    photographers.add(Photographer("Иван", "Петров", 32, "ivan", "pass123", "Портрет", 4.8));
+    photographers.add(Photographer("Олег", "Сидоров", 25, "oleg", "qwerty", "Пейзаж", 3.5));
+    photographers.add(Photographer("Мария", "Козлова", 29, "maria", "abc123", "Репортаж", 4.2));
+
+    // Добавляем администраторов
+    admins.add(Administrator("Анна", "Смирнова", 28, "anna", "admin456", 3, "IT-отдел"));
+    admins.add(Administrator("Пётр", "Волков", 35, "petr", "admin789", 2, "Архив"));
+
+    // Добавляем фотографии
+    photos.add(Photo("Закат на море", "2024-06-15", "Иван Петров"));
+    photos.add(Photo("Горный пейзаж", "2024-07-20", "Олег Сидоров"));
+    photos.add(Photo("Портрет", "2024-08-01", "Мария Козлова"));
+
+    // Инициализируем элементы меню
+    items.add(CMenuItem{"Показать фотографов", showPhotographer});
+    items.add(CMenuItem{"Роль фотографа", rolePhotographer});
+    items.add(CMenuItem{"Показать администраторов", showAdmin});
+    items.add(CMenuItem{"Роль администратора", roleAdmin});
+    items.add(CMenuItem{"Показать фотографии", showPhoto});
+    items.add(CMenuItem{"Ввод фотографа", inputPhotographer});
+    items.add(CMenuItem{"Сравнение фотографов", comparePhotographers});
+    items.add(CMenuItem{"Добавить фотографа", addPhotographer});
+    items.add(CMenuItem{"Удалить фотографа", deletePhotographer});
+    items.add(CMenuItem{"Сортировать фотографов", sortPhotographers});
+}
 
 int showPhotographer() {
-    for (int i = 0; i < photographersCount; i++) {
-        std::cout << i + 1 << ". " << photographers[i] << std::endl;
+    for (int i = 0; i < photographers.getSize(); i++) {
+        std::cout << i + 1 << ". " << photographers.get(i) << std::endl;
     }
     std::cout << std::endl;
     return 1;
 }
 
-int authPhotographer() {
-    photographers[0].authenticate();
+int rolePhotographer() {
+    std::cout << "Роль: " << photographers.get(0).getRole() << std::endl;
     return 2;
 }
 
-int rolePhotographer() {
-    std::cout << "Роль: " << photographers[0].getRole() << std::endl;
+int showAdmin() {
+    for (int i = 0; i < admins.getSize(); i++) {
+        admins.get(i).printInfo();
+    }
     return 3;
 }
 
-int showAdmin() {
-    for (int i = 0; i < ADMINS_COUNT; i++) {
-        admins[i].printInfo();
-    }
+int roleAdmin() {
+    std::cout << "Роль: " << admins.get(0).getRole() << std::endl;
     return 4;
 }
 
-int authAdmin() {
-    admins[0].authenticate();
+int showPhoto() {
+    for (int i = 0; i < photos.getSize(); i++) {
+        photos.get(i).printInfo();
+    }
     return 5;
 }
 
-int roleAdmin() {
-    std::cout << "Роль: " << admins[0].getRole() << std::endl;
+int inputPhotographer() {
+    std::cin >> photographers.get(0);
     return 6;
 }
 
-int showPhoto() {
-    for (int i = 0; i < PHOTOS_COUNT; i++) {
-        photos[i].printInfo();
-    }
-    return 7;
-}
-
-int inputPhotographer() {
-    std::cin >> photographers[0];
-    return 8;
-}
-
 int comparePhotographers() {
-    if (photographers[0] == photographers[1])
+    if (photographers.get(0) == photographers.get(1))
         std::cout << "Рейтинги равны" << std::endl;
-    else if (photographers[0] > photographers[1])
-        std::cout << photographers[0].getFirstName() << " лучше" << std::endl;
+    else if (photographers.get(0) > photographers.get(1))
+        std::cout << photographers.get(0).getFirstName() << " лучше" << std::endl;
     else
-        std::cout << photographers[1].getFirstName() << " лучше" << std::endl;
-    return 9;
+        std::cout << photographers.get(1).getFirstName() << " лучше" << std::endl;
+    return 7;
 }
 
 int addPhotographer() {
     Photographer p{ "", "", 0, "", "", "", 0.0 };
     std::cin >> p;
-    photographers.push_back(p);
-    photographersCount++;
-    return 10;
+    photographers.add(p);
+    return 8;
 }
 
 int deletePhotographer() {
-    std::cout << "Введите номер для удаления (1-" << photographersCount << "): ";
+    std::cout << "Введите номер для удаления (1-" << photographers.getSize() << "): ";
     int idx;
     std::cin >> idx;
     idx--;
-    if (idx < 0 || idx >= photographersCount) {
+    if (idx < 0 || idx >= photographers.getSize()) {
         std::cout << "Неверный номер!" << std::endl;
-        return 11;
+        return 9;
     }
-    photographers.erase(photographers.begin() + idx);
-    photographersCount--;
+    photographers.removeAt(idx);
     std::cout << "Удалено!" << std::endl;
-    return 11;
+    return 9;
 }
 
 int sortPhotographers() {
-    for (int i = 0; i < photographersCount - 1; i++) {
-        for (int j = 0; j < photographersCount - i - 1; j++) {
-            if (photographers[j] > photographers[j + 1]) {
-                Photographer tmp = photographers[j];
-                photographers[j] = photographers[j + 1];
-                photographers[j + 1] = tmp;
-            }
-        }
-    }
+    // Сортировка фотографов по рейтингу
+    photographers.sort();
     std::cout << "Отсортировано по рейтингу!" << std::endl;
-    return 12;
+    return 10;
 }
 
-bool authorize()
-{
-    std::string login, password;
-    std::cout << "=== Авторизация ===" << std::endl;
-    std::cout << "Логин: ";
-    std::cin >> login;
-    std::cout << "Пароль: ";
-    std::cin >> password;
-
-    for (int i = 0; i < photographersCount; i++)
-    {
-        if (photographers[i].getLogin() == login &&
-            photographers[i].getPassword() == password)
-        {
-            std::cout << "Добро пожаловать, " << photographers[i].getFirstName() << "!" << std::endl;
-            return true;
-        }
-    }
-    for (int i = 0; i < ADMINS_COUNT; i++)
-    {
-        if (admins[i].getLogin() == login &&
-            admins[i].getPassword() == password)
-        {
-            std::cout << "Добро пожаловать, " << admins[i].getFirstName() << "!" << std::endl;
-            return true;
-        }
-    }
-    std::cout << "Неверный логин или пароль!" << std::endl;
-    return false;
-}
-
-const int ITEMS_NUMBER = 12;
-
-CMenuItem items[ITEMS_NUMBER]{
-    CMenuItem{"Показать фотографов",          showPhotographer},
-    CMenuItem{"Аутентификация фотографа",     authPhotographer},
-    CMenuItem{"Роль фотографа",               rolePhotographer},
-    CMenuItem{"Показать администраторов",     showAdmin},
-    CMenuItem{"Аутентификация администратора",authAdmin},
-    CMenuItem{"Роль администратора",          roleAdmin},
-    CMenuItem{"Показать фотографии",          showPhoto},
-    CMenuItem{"Ввод фотографа",               inputPhotographer},
-    CMenuItem{"Сравнение фотографов",         comparePhotographers},
-    CMenuItem{"Добавить фотографа",           addPhotographer},
-    CMenuItem{"Удалить фотографа",            deletePhotographer},
-    CMenuItem{"Сортировать фотографов",       sortPhotographers},
-};
 int main() {
-    bool auth = false;
-    while (!auth)
-    {
-        auth = authorize();
+    // Инициализируем данные
+    initializeData();
+
+    // Контейнер для авторизации всех пользователей (фотографы и администраторы)
+    MyArray<User*> allUsers;
+    for (int i = 0; i < photographers.getSize(); i++) {
+        allUsers.add(&photographers.get(i));
+    }
+    for (int i = 0; i < admins.getSize(); i++) {
+        allUsers.add(&admins.get(i));
     }
 
-    CMenu menu("Система управления фотографиями", items, ITEMS_NUMBER);
+    Auth auth(allUsers);
+    if (!auth.login()) {
+        return 0;
+    }
+    CMenu menu("Система управления фотографиями", items.begin(), items.getSize());
     while (menu.runCommand()) {};
     return 0;
 }

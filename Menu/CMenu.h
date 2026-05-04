@@ -2,7 +2,7 @@
 
 #include <string>
 #include <cstddef>
-#include "CMenuItem.h"
+#include "Menu/CMenuItem.h"
 
 using namespace std;
 
