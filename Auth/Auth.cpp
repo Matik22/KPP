@@ -1,5 +1,4 @@
 #include "Auth/Auth.h"
-
 #include <iostream>
 #include <string>
 
@@ -10,12 +9,10 @@ bool Auth::login() {
         std::cout << "Введите логин: ";
         std::cin >> login;
 
-        if (login == "0") {
-            return false;
-        }
+        if (login == "0") return false;
 
         User* found = nullptr;
-        for (auto it : users) {
+        for (auto it : m_users) {
             if (login == it->getLogin()) {
                 found = it;
                 break;
@@ -32,8 +29,8 @@ bool Auth::login() {
         std::cin >> password;
 
         if (password == found->getPassword()) {
-            currentUser = found;
-            std::cout << "Добро пожаловать, " << currentUser->getFirstName() << "!" << std::endl;
+            m_currentUser = found;
+            std::cout << "Добро пожаловать, " << m_currentUser->getFirstName() << "!" << std::endl;
             return true;
         } else {
             std::cout << "Неверный пароль!" << std::endl;
@@ -41,14 +38,6 @@ bool Auth::login() {
     }
 }
 
-bool Auth::isAuthenticated() {
-    return currentUser != nullptr;
-}
-
-User* Auth::getCurrentUser() {
-    return currentUser;
-}
-
-void Auth::logout() {
-    currentUser = nullptr;
-}
+bool Auth::isAuthenticated() { return m_currentUser != nullptr; }
+User* Auth::getCurrentUser() { return m_currentUser; }
+void Auth::logout()          { m_currentUser = nullptr; }

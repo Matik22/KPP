@@ -1,73 +1,74 @@
 #pragma once
 #include <iostream>
-#include <string>
 #include <algorithm>
-#include <memory> // Для std::uninitialized_copy и т.д.
+#include <stdexcept>
+#include <utility>
+#include "../Photo/Photo.h"
 
-template <typename T>
-class MyArray {
-private:
-    T* arr;
-    int capacity;
-    int size;
+#pragma region ArrayIterator
 
-    // Вспомогательная функция для уничтожения элементов в диапазоне [start, end)
-    void destroyRange(T* start, T* end);
-
-    // Вспомогательная функция для построения элементов из другого диапазона
-    void constructFrom(const T* start, const T* end, T* dest);
-
+class ArrayIterator {
+    friend class MyArray;
 public:
-    // Конструктор
-    MyArray(int initialCapacity = 10);
+    ArrayIterator(const ArrayIterator& other) : m_ptr(other.m_ptr) {}
 
-    // Деструктор
-    ~MyArray();
+    bool operator==(const ArrayIterator& other) const { return m_ptr == other.m_ptr; }
+    bool operator!=(const ArrayIterator& other) const { return m_ptr != other.m_ptr; }
 
-    // Конструктор копирования
-    MyArray(const MyArray& other);
+    ArrayIterator& operator++() { ++m_ptr; return *this; }
+    ArrayIterator  operator++(int) { ArrayIterator tmp(*this); ++m_ptr; return tmp; }
 
-    // Оператор присваивания копированием
-    MyArray& operator=(const MyArray& other);
+    Photo& operator*()  const { return *m_ptr; }
+    Photo* operator->() const { return  m_ptr; }
 
-    // Добавить элемент в конце
-    void add(const T& element);
-
-    // Получить элемент по индексу
-    T& get(int index);
-
-    // Получить элемент по индексу (константная версия)
-    const T& get(int index) const;
-
-    // Установить элемент по индексу
-    void set(int index, const T& value);
-
-    // Удалить элемент по индексу
-    void removeAt(int index);
-
-    // Получить текущий размер
-    int getSize() const;
-
-    // Проверить, пуст ли массив
-    bool isEmpty() const;
-
-    // Напечатать все элементы
-    void printAll() const;
-
-    // Отсортировать элементы (по возрастанию)
-    void sort();
-
-    // Отфильтровать элементы по условию
-    // Возвращает новый MyArray с элементами, соответствующими условию
-    template <typename Predicate>
-    MyArray<T> filter(Predicate condition) const;
-
-    // Поддержка итераторов
-    T* begin();
-    T* end();
-    const T* begin() const;
-    const T* end() const;
+private:
+    Photo* m_ptr;
+    explicit ArrayIterator(Photo* ptr) : m_ptr(ptr) {}
 };
 
-// Включить реализацию
-#include "MyArray/MyArray.cpp"
+#pragma endregion
+
+
+#pragma region class_MyArray
+
+class MyArray {
+public:
+    typedef ArrayIterator iterator;
+
+    MyArray(int initialCapacity = 10);
+    MyArray(const MyArray& other);
+    MyArray& operator=(const MyArray& other);
+    ~MyArray();
+
+    Photo&       operator[](int index);
+    const Photo& operator[](int index) const;
+
+    friend std::ostream& operator<<(std::ostream& out, const MyArray& obj);
+    friend std::istream& operator>>(std::istream& in,  MyArray& obj);
+
+    void         add(const Photo& element);
+    Photo&       get(int index);
+    const Photo& get(int index) const;
+    void         set(int index, const Photo& value);
+    void         removeAt(int index);
+    void         sort();
+
+    int  getSize()     const;
+    int  getCapacity() const;
+    bool isEmpty()     const;
+
+    iterator begin();
+    iterator end();
+
+private:
+    int    m_capacity;
+    int    m_size;
+    Photo* m_arr;
+
+    void destroyRange(Photo* start, Photo* end);
+    void constructFrom(const Photo* start, const Photo* end, Photo* dest);
+};
+
+#pragma endregion
+
+#include "MyArray.cpp"

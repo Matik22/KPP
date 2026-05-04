@@ -1,177 +1,149 @@
 #include <stdexcept>
-#include <utility> // Для std::move
+#include <utility>
+#include <iostream>
 
-template <typename T>
-void MyArray<T>::destroyRange(T* start, T* end) {
+#pragma region helpers
+
+void MyArray::destroyRange(Photo* start, Photo* end) {
+    while (start != end) { --end; end->~Photo(); }
+}
+
+void MyArray::constructFrom(const Photo* start, const Photo* end, Photo* dest) {
     while (start != end) {
-        --end;
-        end->~T();
+        new (dest) Photo(*start);
+        ++dest; ++start;
     }
 }
 
-template <typename T>
-void MyArray<T>::constructFrom(const T* start, const T* end, T* dest) {
-    while (start != end) {
-        new (dest) T(*start);
-        ++dest;
-        ++start;
-    }
+#pragma endregion
+
+
+#pragma region constructors_destructor
+
+MyArray::MyArray(int initialCapacity)
+    : m_capacity(initialCapacity), m_size(0),
+      m_arr(static_cast<Photo*>(::operator new[](initialCapacity * sizeof(Photo)))) {}
+
+MyArray::MyArray(const MyArray& other)
+    : m_capacity(other.m_capacity), m_size(other.m_size),
+      m_arr(static_cast<Photo*>(::operator new[](other.m_capacity * sizeof(Photo)))) {
+    constructFrom(other.m_arr, other.m_arr + other.m_size, m_arr);
 }
 
-template <typename T>
-MyArray<T>::MyArray(int initialCapacity) {
-    capacity = initialCapacity;
-    size = 0;
-    arr = static_cast<T*>(::operator new[](capacity * sizeof(T)));
-}
-
-template <typename T>
-MyArray<T>::~MyArray() {
-    // Уничтожить все построенные элементы
-    destroyRange(arr, arr + size);
-    // Освободить память
-    ::operator delete[](arr);
-}
-
-template <typename T>
-MyArray<T>::MyArray(const MyArray& other) {
-    capacity = other.capacity;
-    size = other.size;
-    arr = static_cast<T*>(::operator new[](capacity * sizeof(T)));
-    constructFrom(other.arr, other.arr + other.size, arr);
-}
-
-template <typename T>
-MyArray<T>& MyArray<T>::operator=(const MyArray& other) {
+MyArray& MyArray::operator=(const MyArray& other) {
     if (this != &other) {
-        // Уничтожить существующие элементы
-        destroyRange(arr, arr + size);
-        ::operator delete[](arr);
-
-        // Скопировать из other
-        capacity = other.capacity;
-        size = other.size;
-        arr = static_cast<T*>(::operator new[](capacity * sizeof(T)));
-        constructFrom(other.arr, other.arr + other.size, arr);
+        destroyRange(m_arr, m_arr + m_size);
+        ::operator delete[](m_arr);
+        m_capacity = other.m_capacity;
+        m_size     = other.m_size;
+        m_arr      = static_cast<Photo*>(::operator new[](m_capacity * sizeof(Photo)));
+        constructFrom(other.m_arr, other.m_arr + other.m_size, m_arr);
     }
     return *this;
 }
 
-template <typename T>
-void MyArray<T>::add(const T& element) {
-    if (size >= capacity) {
-        // Удвоить ёмкость
-        int newCapacity = (capacity == 0) ? 1 : capacity * 2;
-        T* newArr = static_cast<T*>(::operator new[](newCapacity * sizeof(T)));
+MyArray::~MyArray() {
+    destroyRange(m_arr, m_arr + m_size);
+    ::operator delete[](m_arr);
+}
 
-        // Скопировать существующие элементы в новый массив
-        constructFrom(arr, arr + size, newArr);
+#pragma endregion
 
-        // Уничтожить старые элементы и освободить память
-        destroyRange(arr, arr + size);
-        ::operator delete[](arr);
 
-        arr = newArr;
-        capacity = newCapacity;
+#pragma region operators
+
+Photo& MyArray::operator[](int index) {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    return m_arr[index];
+}
+
+const Photo& MyArray::operator[](int index) const {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    return m_arr[index];
+}
+
+std::ostream& operator<<(std::ostream& out, const MyArray& obj) {
+    for (int i = 0; i < obj.m_size; ++i) {
+        out << "[" << i << "] "
+            << obj.m_arr[i].getTitle() << " | "
+            << obj.m_arr[i].getDate()  << " | "
+            << obj.m_arr[i].getAuthor() << "\n";
     }
-
-    // Построить новый элемент в конце
-    new (&arr[size]) T(element);
-    size++;
+    return out;
 }
 
-template <typename T>
-T& MyArray<T>::get(int index) {
-    if (index < 0 || index >= size) {
-        throw std::out_of_range("Индекс вне диапазона");
+std::istream& operator>>(std::istream& in, MyArray& obj) {
+    int n;
+    std::cout << "Введите количество фото -> ";
+    in >> n; in.ignore();
+    for (int i = 0; i < n; ++i) {
+        std::string t, d, a;
+        std::cout << "Фото [" << i << "] название -> "; std::getline(in, t);
+        std::cout << "Фото [" << i << "] дата     -> "; std::getline(in, d);
+        std::cout << "Фото [" << i << "] автор    -> "; std::getline(in, a);
+        obj.add(Photo(t, d, a));
     }
-    return arr[index];
+    return in;
 }
 
-template <typename T>
-const T& MyArray<T>::get(int index) const {
-    if (index < 0 || index >= size) {
-        throw std::out_of_range("Индекс вне диапазона");
+#pragma endregion
+
+
+#pragma region methods
+
+void MyArray::add(const Photo& element) {
+    if (m_size >= m_capacity) {
+        int newCap = (m_capacity == 0) ? 1 : m_capacity * 2;
+        Photo* newArr = static_cast<Photo*>(::operator new[](newCap * sizeof(Photo)));
+        constructFrom(m_arr, m_arr + m_size, newArr);
+        destroyRange(m_arr, m_arr + m_size);
+        ::operator delete[](m_arr);
+        m_arr      = newArr;
+        m_capacity = newCap;
     }
-    return arr[index];
+    new (&m_arr[m_size]) Photo(element);
+    ++m_size;
 }
 
-template <typename T>
-void MyArray<T>::set(int index, const T& value) {
-    if (index < 0 || index >= size) {
-        throw std::out_of_range("Индекс вне диапазона");
-    }
-    arr[index] = value;
+Photo& MyArray::get(int index) {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    return m_arr[index];
 }
 
-template <typename T>
-void MyArray<T>::removeAt(int index) {
-    if (index < 0 || index >= size) {
-        throw std::out_of_range("Индекс вне диапазона");
-    }
-
-    // Уничтожить элемент по индексу
-    arr[index].~T();
-
-    // Сдвинуть элементы влево
-    for (int i = index; i < size - 1; i++) {
-        arr[i] = std::move(arr[i + 1]);
-    }
-
-    size--;
+const Photo& MyArray::get(int index) const {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    return m_arr[index];
 }
 
-template <typename T>
-int MyArray<T>::getSize() const {
-    return size;
+void MyArray::set(int index, const Photo& value) {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    m_arr[index] = value;
 }
 
-template <typename T>
-bool MyArray<T>::isEmpty() const {
-    return size == 0;
+void MyArray::removeAt(int index) {
+    if (index < 0 || index >= m_size) throw std::out_of_range("Индекс вне диапазона");
+    m_arr[index].~Photo();
+    for (int i = index; i < m_size - 1; ++i)
+        m_arr[i] = std::move(m_arr[i + 1]);
+    --m_size;
 }
 
-template <typename T>
-void MyArray<T>::printAll() const {
-    for (int i = 0; i < size; i++) {
-        std::cout << arr[i] << " ";
-    }
-    std::cout << std::endl;
+void MyArray::sort() {
+    std::sort(m_arr, m_arr + m_size, [](const Photo& a, const Photo& b) {
+        return a.getTitle() < b.getTitle();
+    });
 }
 
-template <typename T>
-void MyArray<T>::sort() {
-    std::sort(arr, arr + size);
-}
+int  MyArray::getSize()     const { return m_size; }
+int  MyArray::getCapacity() const { return m_capacity; }
+bool MyArray::isEmpty()     const { return m_size == 0; }
 
-template <typename T>
-template <typename Predicate>
-MyArray<T> MyArray<T>::filter(Predicate condition) const {
-    MyArray<T> result;
-    for (int i = 0; i < size; i++) {
-        if (condition(arr[i])) {
-            result.add(arr[i]);
-        }
-    }
-    return result;
-}
+#pragma endregion
 
-template <typename T>
-T* MyArray<T>::begin() {
-    return arr;
-}
 
-template <typename T>
-T* MyArray<T>::end() {
-    return arr + size;
-}
+#pragma region iterators
 
-template <typename T>
-const T* MyArray<T>::begin() const {
-    return arr;
-}
+MyArray::iterator MyArray::begin() { return iterator(m_arr); }
+MyArray::iterator MyArray::end()   { return iterator(m_arr + m_size); }
 
-template <typename T>
-const T* MyArray<T>::end() const {
-    return arr + size;
-}
+#pragma endregion
