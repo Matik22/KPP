@@ -1,10 +1,10 @@
 #pragma once
-#include <vector>
+#include "MyArray/MyArray.h"
 #include "User/User.h"
 
 class Auth {
 public:
-    Auth(const std::vector<User*>& users) : m_users(users), m_currentUser(nullptr) {}
+    Auth(const MyArray<User*>& users) : m_users(users), m_currentUser(nullptr) {}
 
     bool login();
     bool isAuthenticated();
@@ -12,6 +12,6 @@ public:
     void logout();
 
 private:
-    std::vector<User*> m_users;
+    MyArray<User*> m_users;
     User* m_currentUser;
 };

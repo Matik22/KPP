@@ -7,6 +7,7 @@ private:
     double rating;
 
 public:
+    Photographer() = default;
     Photographer(std::string fN, std::string lN, int a,
         std::string l, std::string pa,
         std::string spec, double rat)

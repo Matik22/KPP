@@ -7,6 +7,7 @@ private:
     std::string department;
 
 public:
+    Administrator() = default;
     Administrator(std::string fN, std::string lN, int a,
         std::string l, std::string pa,
         int lvl, std::string dep)

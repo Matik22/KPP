@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "../MyArray/IContainable/IContainable.h"
 
-class Photo {
+class Photo : public IContainable {
 private:
     std::string title;
     std::string date;
@@ -13,6 +14,7 @@ public:
         std::string auth)
         : title(t), date(d), author(auth) {
     }
+    Photo() : title(""), date(""), author("") {}
 
     std::string getTitle() const { return title; }
     std::string getDate() const { return date; }
@@ -22,5 +24,16 @@ public:
     void setDate(std::string d) { date = d; }
     void setAuthor(std::string a) { author = a; }
 
-    void printInfo();
+    void printInfo() {
+        std::cout << title << " (" << date << ") от " << author << std::endl;
+    }
+
+    bool operator<(const Photo& other) const {
+        return title < other.title;
+    }
+
+    bool isLessThan(const IContainable& other) const override {
+        const Photo* p = dynamic_cast<const Photo*>(&other);
+        return p && title < p->title;
+    }
 };

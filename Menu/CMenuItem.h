@@ -8,6 +8,7 @@ using namespace std;
 namespace XXX {
     class CMenuItem {
     public:
+        CMenuItem() = default;
         typedef int(*Func)();
         CMenuItem(std::string, Func);
         Func func{};

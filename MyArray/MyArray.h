@@ -2,73 +2,70 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
-#include <utility>
-#include "../Photo/Photo.h"
 
-#pragma region ArrayIterator
-
-class ArrayIterator {
-    friend class MyArray;
-public:
-    ArrayIterator(const ArrayIterator& other) : m_ptr(other.m_ptr) {}
-
-    bool operator==(const ArrayIterator& other) const { return m_ptr == other.m_ptr; }
-    bool operator!=(const ArrayIterator& other) const { return m_ptr != other.m_ptr; }
-
-    ArrayIterator& operator++() { ++m_ptr; return *this; }
-    ArrayIterator  operator++(int) { ArrayIterator tmp(*this); ++m_ptr; return tmp; }
-
-    Photo& operator*()  const { return *m_ptr; }
-    Photo* operator->() const { return  m_ptr; }
-
-private:
-    Photo* m_ptr;
-    explicit ArrayIterator(Photo* ptr) : m_ptr(ptr) {}
-};
-
-#pragma endregion
-
-
-#pragma region class_MyArray
-
+template <typename T>
 class MyArray {
-public:
-    typedef ArrayIterator iterator;
-
-    MyArray(int initialCapacity = 10);
-    MyArray(const MyArray& other);
-    MyArray& operator=(const MyArray& other);
-    ~MyArray();
-
-    Photo&       operator[](int index);
-    const Photo& operator[](int index) const;
-
-    friend std::ostream& operator<<(std::ostream& out, const MyArray& obj);
-    friend std::istream& operator>>(std::istream& in,  MyArray& obj);
-
-    void         add(const Photo& element);
-    Photo&       get(int index);
-    const Photo& get(int index) const;
-    void         set(int index, const Photo& value);
-    void         removeAt(int index);
-    void         sort();
-
-    int  getSize()     const;
-    int  getCapacity() const;
-    bool isEmpty()     const;
-
-    iterator begin();
-    iterator end();
-
 private:
-    int    m_capacity;
-    int    m_size;
-    Photo* m_arr;
+    T* data;
+    int capacity;
+    int size;
 
-    void destroyRange(Photo* start, Photo* end);
-    void constructFrom(const Photo* start, const Photo* end, Photo* dest);
+    void resize() {
+        int newCap = (capacity == 0) ? 1 : capacity * 2;
+        T* newData = new T[newCap];
+        for (int i = 0; i < size; ++i) {
+            newData[i] = data[i];
+        }
+        delete[] data;
+        data = newData;
+        capacity = newCap;
+    }
+
+public:
+    MyArray(int initCap = 10) : capacity(initCap), size(0) {
+        data = new T[capacity];
+    }
+
+    ~MyArray() {
+        delete[] data;
+    }
+
+    void add(const T& item) {
+        if (size >= capacity)
+            resize();
+        data[size++] = item;
+    }
+
+    T& get(int index) {
+        if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
+        return data[index];
+    }
+
+    const T& get(int index) const {
+        if(index < 0 || index >= size) throw std::out_of_range("Index out of range");
+        return data[index];
+    }
+
+    void removeAt(int index) {
+        if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
+        for (int i = index; i < size - 1; ++i) data[i] = data[i + 1];
+        --size;
+    }
+
+    int getSize() const {return size;}
+    bool isEmpty() const {return size == 0;}
+
+    void sort() {
+        for (int i = 0; i < size - 1; ++i) {
+            for (int j = i + 1; j < size; ++j) {
+                if (data[i].isLessThan(data[j])) std::swap(data[i], data[j]);
+            }
+        }
+    }
+
+    T& operator[](int index) {return get(index);}
+    const T& operator[](int index) const {return get(index);}
+
+    T* begin() {return data;}
+    T* end() {return data + size;}
 };
-
-#pragma endregion
-
-#include "MyArray.cpp"

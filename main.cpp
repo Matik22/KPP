@@ -12,13 +12,11 @@
 using namespace std;
 using namespace XXX;
 
-// MyArray только для Photo
-MyArray photos;
+MyArray<Photo> photos;
 
-// Все остальные — std::vector
-vector<Photographer> photographers;
-vector<Administrator> admins;
-vector<CMenuItem>    items;
+MyArray<Photographer> photographers;
+MyArray<Administrator> admins;
+MyArray<CMenuItem>    items;
 
 // Прототипы функций
 int showPhotographer();
@@ -33,31 +31,31 @@ int deletePhotographer();
 int sortPhotographers();
 
 void initializeData() {
-    photographers.push_back(Photographer("Иван",  "Петров",  32, "ivan",  "pass123",  "Портрет",   4.8));
-    photographers.push_back(Photographer("Олег",  "Сидоров", 25, "oleg",  "qwerty",   "Пейзаж",    3.5));
-    photographers.push_back(Photographer("Мария", "Козлова", 29, "maria", "abc123",   "Репортаж",  4.2));
+    photographers.add(Photographer("Иван",  "Петров",  32, "ivan",  "pass123",  "Портрет",   4.8));
+    photographers.add(Photographer("Олег",  "Сидоров", 25, "oleg",  "qwerty",   "Пейзаж",    3.5));
+    photographers.add(Photographer("Мария", "Козлова", 29, "maria", "abc123",   "Репортаж",  4.2));
 
-    admins.push_back(Administrator("Анна", "Смирнова", 28, "anna", "admin456", 3, "IT-отдел"));
-    admins.push_back(Administrator("Пётр", "Волков",   35, "petr", "admin789", 2, "Архив"));
+    admins.add(Administrator("Анна", "Смирнова", 28, "anna", "admin456", 3, "IT-отдел"));
+    admins.add(Administrator("Пётр", "Волков",   35, "petr", "admin789", 2, "Архив"));
 
     photos.add(Photo("Закат на море",  "2024-06-15", "Иван Петров"));
     photos.add(Photo("Горный пейзаж",  "2024-07-20", "Олег Сидоров"));
     photos.add(Photo("Портрет",        "2024-08-01", "Мария Козлова"));
 
-    items.push_back(CMenuItem{"Показать фотографов",   showPhotographer});
-    items.push_back(CMenuItem{"Роль фотографа",         rolePhotographer});
-    items.push_back(CMenuItem{"Показать администраторов", showAdmin});
-    items.push_back(CMenuItem{"Роль администратора",    roleAdmin});
-    items.push_back(CMenuItem{"Показать фотографии",    showPhoto});
-    items.push_back(CMenuItem{"Ввод фотографа",         inputPhotographer});
-    items.push_back(CMenuItem{"Сравнение фотографов",   comparePhotographers});
-    items.push_back(CMenuItem{"Добавить фотографа",     addPhotographer});
-    items.push_back(CMenuItem{"Удалить фотографа",      deletePhotographer});
-    items.push_back(CMenuItem{"Сортировать фотографов", sortPhotographers});
+    items.add(CMenuItem{"Показать фотографов",   showPhotographer});
+    items.add(CMenuItem{"Роль фотографа",         rolePhotographer});
+    items.add(CMenuItem{"Показать администраторов", showAdmin});
+    items.add(CMenuItem{"Роль администратора",    roleAdmin});
+    items.add(CMenuItem{"Показать фотографии",    showPhoto});
+    items.add(CMenuItem{"Ввод фотографа",         inputPhotographer});
+    items.add(CMenuItem{"Сравнение фотографов",   comparePhotographers});
+    items.add(CMenuItem{"Добавить фотографа",     addPhotographer});
+    items.add(CMenuItem{"Удалить фотографа",      deletePhotographer});
+    items.add(CMenuItem{"Сортировать фотографов", sortPhotographers});
 }
 
 int showPhotographer() {
-    for (int i = 0; i < (int)photographers.size(); i++)
+    for (int i = 0; i < (int)photographers.getSize(); i++)
         std::cout << i + 1 << ". " << photographers[i] << std::endl;
     std::cout << std::endl;
     return 1;
@@ -103,26 +101,26 @@ int comparePhotographers() {
 int addPhotographer() {
     Photographer p{"", "", 0, "", "", "", 0.0};
     std::cin >> p;
-    photographers.push_back(p);
+    photographers.add(p);
     return 8;
 }
 
 int deletePhotographer() {
-    std::cout << "Введите номер для удаления (1-" << photographers.size() << "): ";
+    std::cout << "Введите номер для удаления (1-" << photographers.getSize() << "): ";
     int idx;
     std::cin >> idx;
     idx--;
-    if (idx < 0 || idx >= (int)photographers.size()) {
+    if (idx < 0 || idx >= (int)photographers.getSize()) {
         std::cout << "Неверный номер!" << std::endl;
         return 9;
     }
-    photographers.erase(photographers.begin() + idx);
+    photographers.removeAt(idx);
     std::cout << "Удалено!" << std::endl;
     return 9;
 }
 
 int sortPhotographers() {
-    std::sort(photographers.begin(), photographers.end());
+    photographers.sort();
     std::cout << "Отсортировано по рейтингу!" << std::endl;
     return 10;
 }
@@ -130,14 +128,14 @@ int sortPhotographers() {
 int main() {
     initializeData();
 
-    vector<User*> allUsers;
-    for (auto& p : photographers) allUsers.push_back(&p);
-    for (auto& a : admins)        allUsers.push_back(&a);
+    MyArray<User*> allUsers;
+    for (auto& p : photographers) allUsers.add(&p);
+    for (auto& a : admins)        allUsers.add(&a);
 
     Auth auth(allUsers);
     if (!auth.login()) return 0;
 
-    CMenu menu("Система управления фотографиями", items.data(), items.size());
+    CMenu menu("Система управления фотографиями", items.begin(), items.getSize());
     while (menu.runCommand()) {}
     return 0;
 }
